@@ -102,10 +102,3 @@ it('should toggle the profiler on from stopped', () => {
 npm install
 npm test
 ```
-
-## Publish
-
-Publishing new releases is automated via the GitHub Action https://github.com/mikeal/merge-release tool. 
-
-To ensure your feature is properly released prefix your commit message with `feat` for any new feature. For example: `feat: new API` and this will bump the minor release number.  All other changes will be assumed as patch releases unless you include the string `BREAKING CHANGE` in your commit message or description which will trigger a new major release.  (do not do this unless absolutely required)
-
