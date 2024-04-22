@@ -2,17 +2,14 @@
 
 function ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
-
   if (Object.getOwnPropertySymbols) {
     var symbols = Object.getOwnPropertySymbols(object);
     enumerableOnly && (symbols = symbols.filter(function (sym) {
       return Object.getOwnPropertyDescriptor(object, sym).enumerable;
     })), keys.push.apply(keys, symbols);
   }
-
   return keys;
 }
-
 function _objectSpread2(target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = null != arguments[i] ? arguments[i] : {};
@@ -22,10 +19,8 @@ function _objectSpread2(target) {
       Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
     });
   }
-
   return target;
 }
-
 function _typeof(obj) {
   "@babel/helpers - typeof";
 
@@ -35,7 +30,6 @@ function _typeof(obj) {
     return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
   }, _typeof(obj);
 }
-
 function _defineProperty(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -47,11 +41,11 @@ function _defineProperty(obj, key, value) {
   } else {
     obj[key] = value;
   }
-
   return obj;
 }
 
 // https://developer.chrome.com/extensions/omnibox
+
 var omnibox = {
   setDefaultSuggestion: jest.fn(),
   onInputStarted: {
@@ -91,11 +85,9 @@ var runtime = {
     onMessageListeners.forEach(function (listener) {
       return listener(message);
     });
-
     if (cb !== undefined) {
       return cb();
     }
-
     return Promise.resolve();
   }),
   onMessage: {
@@ -167,25 +159,22 @@ var tabs = {
       onMessage: {
         addListener: jest.fn()
       },
-      postMessage: jest.fn() // TODO: add sender
-
+      postMessage: jest.fn()
+      // TODO: add sender
     };
   }),
   create: jest.fn(function () {
     var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var cb = arguments.length > 1 ? arguments[1] : undefined;
-
     if (cb !== undefined) {
       return cb(props);
     }
-
     return Promise.resolve(props);
   }),
   remove: jest.fn(function (tabIds, cb) {
     if (cb !== undefined) {
       return cb();
     }
-
     return Promise.resolve();
   }),
   duplicate: jest.fn(function () {
@@ -230,11 +219,9 @@ var tabs = {
     onMessageListeners.forEach(function (listener) {
       return listener(tabId, message);
     });
-
     if (cb !== undefined) {
       return cb();
     }
-
     return Promise.resolve();
   }),
   reload: jest.fn(function (tabId, reloadProperties, cb) {
@@ -243,7 +230,6 @@ var tabs = {
 };
 
 var store = {};
-
 function resolveKey(key) {
   if (typeof key === 'string') {
     var result = {};
@@ -260,37 +246,30 @@ function resolveKey(key) {
       return acc;
     }, {});
   }
-
   throw new Error('Wrong key given');
 }
-
 var storage = {
   sync: {
     get: jest.fn(function (id, cb) {
       var result = id === null ? store : resolveKey(id);
-
       if (cb !== undefined) {
         return cb(result);
       }
-
       return Promise.resolve(result);
     }),
     getBytesInUse: jest.fn(function (id, cb) {
       if (cb !== undefined) {
         return cb(0);
       }
-
       return Promise.resolve(0);
     }),
     set: jest.fn(function (payload, cb) {
       Object.keys(payload).forEach(function (key) {
         return store[key] = payload[key];
       });
-
       if (cb !== undefined) {
         return cb();
       }
-
       return Promise.resolve();
     }),
     remove: jest.fn(function (id, cb) {
@@ -298,49 +277,40 @@ var storage = {
       keys.forEach(function (key) {
         return delete store[key];
       });
-
       if (cb !== undefined) {
         return cb();
       }
-
       return Promise.resolve();
     }),
     clear: jest.fn(function (cb) {
       store = {};
-
       if (cb !== undefined) {
         return cb();
       }
-
       return Promise.resolve();
     })
   },
   local: {
     get: jest.fn(function (id, cb) {
       var result = id === null ? store : resolveKey(id);
-
       if (cb !== undefined) {
         return cb(result);
       }
-
       return Promise.resolve(result);
     }),
     getBytesInUse: jest.fn(function (id, cb) {
       if (cb !== undefined) {
         return cb(0);
       }
-
       return Promise.resolve(0);
     }),
     set: jest.fn(function (payload, cb) {
       Object.keys(payload).forEach(function (key) {
         return store[key] = payload[key];
       });
-
       if (cb !== undefined) {
         return cb();
       }
-
       return Promise.resolve();
     }),
     remove: jest.fn(function (id, cb) {
@@ -348,49 +318,40 @@ var storage = {
       keys.forEach(function (key) {
         return delete store[key];
       });
-
       if (cb !== undefined) {
         return cb();
       }
-
       return Promise.resolve();
     }),
     clear: jest.fn(function (cb) {
       store = {};
-
       if (cb !== undefined) {
         return cb();
       }
-
       return Promise.resolve();
     })
   },
   managed: {
     get: jest.fn(function (id, cb) {
       var result = id === null ? store : resolveKey(id);
-
       if (cb !== undefined) {
         return cb(result);
       }
-
       return Promise.resolve(result);
     }),
     getBytesInUse: jest.fn(function (id, cb) {
       if (cb !== undefined) {
         return cb(0);
       }
-
       return Promise.resolve(0);
     }),
     set: jest.fn(function (payload, cb) {
       Object.keys(payload).forEach(function (key) {
         return store[key] = payload[key];
       });
-
       if (cb !== undefined) {
         return cb();
       }
-
       return Promise.resolve();
     }),
     remove: jest.fn(function (id, cb) {
@@ -398,20 +359,16 @@ var storage = {
       keys.forEach(function (key) {
         return delete store[key];
       });
-
       if (cb !== undefined) {
         return cb();
       }
-
       return Promise.resolve();
     }),
     clear: jest.fn(function (cb) {
       store = {};
-
       if (cb !== undefined) {
         return cb();
       }
-
       return Promise.resolve();
     })
   },
@@ -426,10 +383,8 @@ var getDetails = function getDetails(details, cb) {
   if (cb !== undefined) {
     return cb();
   }
-
   return Promise.resolve();
 };
-
 var browserAction = {
   setTitle: jest.fn(),
   getTitle: jest.fn(getDetails),
@@ -448,12 +403,12 @@ var browserAction = {
 };
 
 // https://developer.chrome.com/extensions/commands
+
 var commands = {
   getAll: jest.fn(function (cb) {
     if (cb !== undefined) {
       return cb();
     }
-
     return Promise.resolve();
   }),
   onCommand: {
@@ -465,22 +420,17 @@ var cbOrPromise$1 = function cbOrPromise(cb, value) {
   if (cb !== undefined) {
     return cb(value);
   }
-
   return Promise.resolve(value);
 };
-
 var create = function create(notificationId, options, cb) {
   if (typeof notificationId !== 'string') {
     notificationId = 'generated-id';
   }
-
   if (typeof options === 'function') {
     cb = options;
   }
-
   return cbOrPromise$1(cb, notificationId);
 };
-
 var notifications = {
   create: jest.fn(create),
   update: jest.fn(function (notificationId, options, cb) {
@@ -540,10 +490,8 @@ var cbOrPromise = function cbOrPromise(cb, value) {
   if (cb !== undefined) {
     return cb(value);
   }
-
   return Promise.resolve(value);
 };
-
 var downloads = {
   acceptDanger: jest.fn(function (downloadId, cb) {
     return cbOrPromise(cb);
@@ -645,14 +593,16 @@ var chrome = {
  * directly call the module in their `setupFiles` property.
  */
 global.chrome = chrome;
-global.browser = chrome; // Firefox specific globals
+global.browser = chrome;
+
+// Firefox specific globals
 // if (navigator.userAgent.indexOf('Firefox') !== -1) {
 // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Content_scripts#exportFunction
-
 global.exportFunction = jest.fn(function (func) {
   return func;
-}); // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Content_scripts#cloneInto
-
+});
+// https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Content_scripts#cloneInto
 global.cloneInto = jest.fn(function (obj) {
   return obj;
-}); // }
+});
+// }
