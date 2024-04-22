@@ -143,6 +143,26 @@ describe('browser.storage', () => {
           });
         });
       });
+      test('onChanged', () => {
+        const callback = jest.fn();
+        expect(jest.isMockFunction(storage.onChanged.addListener)).toBe(true);
+        expect(jest.isMockFunction(storage.onChanged.removeListener)).toBe(
+          true
+        );
+        expect(jest.isMockFunction(storage.onChanged.hasListener)).toBe(true);
+        expect(jest.isMockFunction(storage.onChanged.hasListeners)).toBe(true);
+
+        expect(storage.onChanged.hasListeners()).toBe(false);
+        expect(storage.onChanged.hasListener(callback)).toBe(false);
+
+        storage.onChanged.addListener(callback);
+        expect(storage.onChanged.hasListeners()).toBe(true);
+        expect(storage.onChanged.hasListener(callback)).toBe(true);
+
+        storage.onChanged.removeListener(callback);
+        expect(storage.onChanged.hasListeners()).toBe(false);
+        expect(storage.onChanged.hasListener(callback)).toBe(false);
+      });
     });
   });
 });

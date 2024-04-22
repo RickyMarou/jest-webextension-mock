@@ -1,4 +1,5 @@
 let store = {};
+import { createEventListeners } from './createEventListeners';
 
 function resolveKey(key) {
   if (typeof key === 'string') {
@@ -56,6 +57,7 @@ export const storage = {
       }
       return Promise.resolve();
     }),
+    onChanged: createEventListeners(),
   },
   local: {
     get: jest.fn((id, cb) => {
@@ -93,6 +95,7 @@ export const storage = {
       }
       return Promise.resolve();
     }),
+    onChanged: createEventListeners(),
   },
   managed: {
     get: jest.fn((id, cb) => {
@@ -130,10 +133,7 @@ export const storage = {
       }
       return Promise.resolve();
     }),
+    onChanged: createEventListeners(),
   },
-  onChanged: {
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    hasListener: jest.fn(),
-  },
+  onChanged: createEventListeners(),
 };

@@ -239,6 +239,26 @@ var tabs = {
   })
 };
 
+var createEventListeners = function createEventListeners() {
+  var listeners = [];
+  return {
+    addListener: jest.fn(function (listener) {
+      listeners.push(listener);
+    }),
+    removeListener: jest.fn(function (listener) {
+      listeners = listeners.filter(function (l) {
+        return l !== listener;
+      });
+    }),
+    hasListener: jest.fn(function (listener) {
+      return listeners.includes(listener);
+    }),
+    hasListeners: jest.fn(function () {
+      return listeners.length > 0;
+    })
+  };
+};
+
 var store = {};
 function resolveKey(key) {
   if (typeof key === 'string') {
@@ -298,7 +318,8 @@ var storage = {
         return cb();
       }
       return Promise.resolve();
-    })
+    }),
+    onChanged: createEventListeners()
   },
   local: {
     get: jest.fn(function (id, cb) {
@@ -339,7 +360,8 @@ var storage = {
         return cb();
       }
       return Promise.resolve();
-    })
+    }),
+    onChanged: createEventListeners()
   },
   managed: {
     get: jest.fn(function (id, cb) {
@@ -380,13 +402,10 @@ var storage = {
         return cb();
       }
       return Promise.resolve();
-    })
+    }),
+    onChanged: createEventListeners()
   },
-  onChanged: {
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    hasListener: jest.fn()
-  }
+  onChanged: createEventListeners()
 };
 
 var getDetails = function getDetails(details, cb) {
