@@ -55,6 +55,9 @@ describe('browser.storage', () => {
             expect(e.message).toBe('Wrong key given');
           }
         });
+        test('an undefined key', () => {
+          return expect(storage.get()).resolves.toEqual({});
+        });
         afterEach(() => {
           expect(storage.get).toHaveBeenCalledTimes(1);
           storage.clear();

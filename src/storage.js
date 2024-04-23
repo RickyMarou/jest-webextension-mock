@@ -26,7 +26,8 @@ function resolveKey(key, store) {
 export const storage = {
   sync: {
     get: jest.fn((id, cb) => {
-      const result = id === null ? syncStore : resolveKey(id, syncStore);
+      const result =
+        id === null || id === undefined ? syncStore : resolveKey(id, syncStore);
       if (cb !== undefined) {
         return cb(result);
       }
@@ -64,7 +65,10 @@ export const storage = {
   },
   local: {
     get: jest.fn((id, cb) => {
-      const result = id === null ? localStore : resolveKey(id, localStore);
+      const result =
+        id === null || id === undefined
+          ? localStore
+          : resolveKey(id, localStore);
       if (cb !== undefined) {
         return cb(result);
       }
@@ -102,7 +106,10 @@ export const storage = {
   },
   managed: {
     get: jest.fn((id, cb) => {
-      const result = id === null ? managedStore : resolveKey(id, managedStore);
+      const result =
+        id === null || id === undefined
+          ? managedStore
+          : resolveKey(id, managedStore);
       if (cb !== undefined) {
         return cb(result);
       }

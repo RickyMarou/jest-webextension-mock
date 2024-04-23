@@ -283,7 +283,7 @@ function resolveKey(key, store) {
 var storage = {
   sync: {
     get: jest.fn(function (id, cb) {
-      var result = id === null ? syncStore : resolveKey(id, syncStore);
+      var result = id === null || id === undefined ? syncStore : resolveKey(id, syncStore);
       if (cb !== undefined) {
         return cb(result);
       }
@@ -325,7 +325,7 @@ var storage = {
   },
   local: {
     get: jest.fn(function (id, cb) {
-      var result = id === null ? localStore : resolveKey(id, localStore);
+      var result = id === null || id === undefined ? localStore : resolveKey(id, localStore);
       if (cb !== undefined) {
         return cb(result);
       }
@@ -367,7 +367,7 @@ var storage = {
   },
   managed: {
     get: jest.fn(function (id, cb) {
-      var result = id === null ? managedStore : resolveKey(id, managedStore);
+      var result = id === null || id === undefined ? managedStore : resolveKey(id, managedStore);
       if (cb !== undefined) {
         return cb(result);
       }

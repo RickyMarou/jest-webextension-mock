@@ -1,5 +1,11 @@
 # jest-webextension-mock
 
+## 3.8.16
+
+### Patch Changes
+
+- Fix storage.get method throwing when not provided with a key
+
 ## 3.8.15
 
 ### Patch Changes
