@@ -1,7 +1,10 @@
-let store = {};
 import { createEventListeners } from './createEventListeners';
 
-function resolveKey(key) {
+let syncStore = {};
+let localStore = {};
+let managedStore = {};
+
+function resolveKey(key, store) {
   if (typeof key === 'string') {
     const result = {};
     result[key] = store[key];
@@ -23,7 +26,7 @@ function resolveKey(key) {
 export const storage = {
   sync: {
     get: jest.fn((id, cb) => {
-      const result = id === null ? store : resolveKey(id);
+      const result = id === null ? syncStore : resolveKey(id, syncStore);
       if (cb !== undefined) {
         return cb(result);
       }
@@ -36,7 +39,7 @@ export const storage = {
       return Promise.resolve(0);
     }),
     set: jest.fn((payload, cb) => {
-      Object.keys(payload).forEach((key) => (store[key] = payload[key]));
+      Object.keys(payload).forEach((key) => (syncStore[key] = payload[key]));
       if (cb !== undefined) {
         return cb();
       }
@@ -44,14 +47,14 @@ export const storage = {
     }),
     remove: jest.fn((id, cb) => {
       const keys = typeof id === 'string' ? [id] : id;
-      keys.forEach((key) => delete store[key]);
+      keys.forEach((key) => delete syncStore[key]);
       if (cb !== undefined) {
         return cb();
       }
       return Promise.resolve();
     }),
     clear: jest.fn((cb) => {
-      store = {};
+      syncStore = {};
       if (cb !== undefined) {
         return cb();
       }
@@ -61,7 +64,7 @@ export const storage = {
   },
   local: {
     get: jest.fn((id, cb) => {
-      const result = id === null ? store : resolveKey(id);
+      const result = id === null ? localStore : resolveKey(id, localStore);
       if (cb !== undefined) {
         return cb(result);
       }
@@ -74,7 +77,7 @@ export const storage = {
       return Promise.resolve(0);
     }),
     set: jest.fn((payload, cb) => {
-      Object.keys(payload).forEach((key) => (store[key] = payload[key]));
+      Object.keys(payload).forEach((key) => (localStore[key] = payload[key]));
       if (cb !== undefined) {
         return cb();
       }
@@ -82,14 +85,14 @@ export const storage = {
     }),
     remove: jest.fn((id, cb) => {
       const keys = typeof id === 'string' ? [id] : id;
-      keys.forEach((key) => delete store[key]);
+      keys.forEach((key) => delete localStore[key]);
       if (cb !== undefined) {
         return cb();
       }
       return Promise.resolve();
     }),
     clear: jest.fn((cb) => {
-      store = {};
+      localStore = {};
       if (cb !== undefined) {
         return cb();
       }
@@ -99,7 +102,7 @@ export const storage = {
   },
   managed: {
     get: jest.fn((id, cb) => {
-      const result = id === null ? store : resolveKey(id);
+      const result = id === null ? managedStore : resolveKey(id, managedStore);
       if (cb !== undefined) {
         return cb(result);
       }
@@ -112,7 +115,7 @@ export const storage = {
       return Promise.resolve(0);
     }),
     set: jest.fn((payload, cb) => {
-      Object.keys(payload).forEach((key) => (store[key] = payload[key]));
+      Object.keys(payload).forEach((key) => (managedStore[key] = payload[key]));
       if (cb !== undefined) {
         return cb();
       }
@@ -120,14 +123,14 @@ export const storage = {
     }),
     remove: jest.fn((id, cb) => {
       const keys = typeof id === 'string' ? [id] : id;
-      keys.forEach((key) => delete store[key]);
+      keys.forEach((key) => delete managedStore[key]);
       if (cb !== undefined) {
         return cb();
       }
       return Promise.resolve();
     }),
     clear: jest.fn((cb) => {
-      store = {};
+      managedStore = {};
       if (cb !== undefined) {
         return cb();
       }
