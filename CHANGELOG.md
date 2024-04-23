@@ -1,5 +1,11 @@
 # jest-webextension-mock
 
+## 3.8.15
+
+### Patch Changes
+
+- Forgot to build the package before publishing 🤦
+
 ## 3.8.14
 
 ### Patch Changes
