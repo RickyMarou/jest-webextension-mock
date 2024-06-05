@@ -3,6 +3,7 @@ import { createEventListeners } from './createEventListeners';
 let syncStore = {};
 let localStore = {};
 let managedStore = {};
+let sessionStore = {};
 
 function resolveKey(key, store) {
   if (typeof key === 'string') {
@@ -64,6 +65,47 @@ export const storage = {
     onChanged: createEventListeners(),
   },
   local: {
+    get: jest.fn((id, cb) => {
+      const result =
+        id === null || id === undefined
+          ? localStore
+          : resolveKey(id, localStore);
+      if (cb !== undefined) {
+        return cb(result);
+      }
+      return Promise.resolve(result);
+    }),
+    getBytesInUse: jest.fn((id, cb) => {
+      if (cb !== undefined) {
+        return cb(0);
+      }
+      return Promise.resolve(0);
+    }),
+    set: jest.fn((payload, cb) => {
+      Object.keys(payload).forEach((key) => (localStore[key] = payload[key]));
+      if (cb !== undefined) {
+        return cb();
+      }
+      return Promise.resolve();
+    }),
+    remove: jest.fn((id, cb) => {
+      const keys = typeof id === 'string' ? [id] : id;
+      keys.forEach((key) => delete localStore[key]);
+      if (cb !== undefined) {
+        return cb();
+      }
+      return Promise.resolve();
+    }),
+    clear: jest.fn((cb) => {
+      localStore = {};
+      if (cb !== undefined) {
+        return cb();
+      }
+      return Promise.resolve();
+    }),
+    onChanged: createEventListeners(),
+  },
+  session: {
     get: jest.fn((id, cb) => {
       const result =
         id === null || id === undefined

@@ -365,6 +365,48 @@ var storage = {
     }),
     onChanged: createEventListeners()
   },
+  session: {
+    get: jest.fn(function (id, cb) {
+      var result = id === null || id === undefined ? localStore : resolveKey(id, localStore);
+      if (cb !== undefined) {
+        return cb(result);
+      }
+      return Promise.resolve(result);
+    }),
+    getBytesInUse: jest.fn(function (id, cb) {
+      if (cb !== undefined) {
+        return cb(0);
+      }
+      return Promise.resolve(0);
+    }),
+    set: jest.fn(function (payload, cb) {
+      Object.keys(payload).forEach(function (key) {
+        return localStore[key] = payload[key];
+      });
+      if (cb !== undefined) {
+        return cb();
+      }
+      return Promise.resolve();
+    }),
+    remove: jest.fn(function (id, cb) {
+      var keys = typeof id === 'string' ? [id] : id;
+      keys.forEach(function (key) {
+        return delete localStore[key];
+      });
+      if (cb !== undefined) {
+        return cb();
+      }
+      return Promise.resolve();
+    }),
+    clear: jest.fn(function (cb) {
+      localStore = {};
+      if (cb !== undefined) {
+        return cb();
+      }
+      return Promise.resolve();
+    }),
+    onChanged: createEventListeners()
+  },
   managed: {
     get: jest.fn(function (id, cb) {
       var result = id === null || id === undefined ? managedStore : resolveKey(id, managedStore);
