@@ -1,5 +1,11 @@
 # jest-webextension-mock
 
+## 3.9.0
+
+### Minor Changes
+
+- Add support for storage.session
+
 ## 3.8.16
 
 ### Patch Changes

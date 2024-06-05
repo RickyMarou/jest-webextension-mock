@@ -11,7 +11,7 @@ describe('browser.storage', () => {
 });
 
 describe('browser.storage', () => {
-  ['sync', 'local', 'managed'].forEach((type) => {
+  ['sync', 'local', 'managed', 'session'].forEach((type) => {
     describe(type, () => {
       const storage = browser.storage[type];
       describe('get', () => {
