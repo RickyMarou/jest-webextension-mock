@@ -24,7 +24,7 @@ describe('browser.runtime', () => {
     const name = 'CONNECT_NAME';
     const listener = jest.fn();
     browser.runtime.connect(name).onMessage.addListener(listener);
-    browser.runtime.sendMessage({ test: 'message' }, done);
+    browser.runtime.sendMessage('id', { test: 'message' }, null, done);
     expect(listener).toHaveBeenCalledWith({ test: 'message' });
   });
   test('getURL', () => {
@@ -38,16 +38,16 @@ describe('browser.runtime', () => {
   test('sendMessage', (done) => {
     const callback = jest.fn(() => done());
     expect(jest.isMockFunction(browser.runtime.sendMessage)).toBe(true);
-    browser.runtime.sendMessage({ test: 'message' }, callback);
+    browser.runtime.sendMessage('id', { test: 'message' }, null, callback);
     expect(browser.runtime.sendMessage).toHaveBeenCalledTimes(1);
     expect(callback).toHaveBeenCalledTimes(1);
-    browser.runtime.sendMessage({ test: 'message' });
+    browser.runtime.sendMessage('id', { test: 'message' });
     expect(browser.runtime.sendMessage).toHaveBeenCalledTimes(2);
   });
   test('sendMessage listener', (done) => {
     const listener = jest.fn();
     browser.runtime.onMessage.addListener(listener);
-    browser.runtime.sendMessage({ test: 'message' }, done);
+    browser.runtime.sendMessage('id', { test: 'message' }, null, done);
     expect(listener).toHaveBeenCalledWith({ test: 'message' });
   });
   test('sendMessage promise', () => {
