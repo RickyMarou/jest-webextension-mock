@@ -16,7 +16,7 @@ export const runtime = {
       disconnect: jest.fn(),
     };
   }),
-  sendMessage: jest.fn((message, cb) => {
+  sendMessage: jest.fn((extensionId, message, options, cb) => {
     onMessageListeners.forEach((listener) => listener(message));
     if (cb !== undefined) {
       return cb();
