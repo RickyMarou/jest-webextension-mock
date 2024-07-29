@@ -81,7 +81,7 @@ var runtime = {
       disconnect: jest.fn()
     };
   }),
-  sendMessage: jest.fn(function (message, cb) {
+  sendMessage: jest.fn(function (extensionId, message, options, cb) {
     onMessageListeners.forEach(function (listener) {
       return listener(message);
     });
