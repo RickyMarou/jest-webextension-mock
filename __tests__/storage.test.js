@@ -19,32 +19,21 @@ describe('browser.storage', () => {
         test('a string key', (done) => {
           const key = 'test';
           storage.get(key, (result) => {
-            expect(result).toBeDefined();
-            expect(typeof result === 'object').toBeTruthy();
-            expect(result).toHaveProperty(key, undefined);
+            expect(result).toStrictEqual({});
             done();
           });
         });
         test('an array key', (done) => {
           const keys = ['test1', 'test2'];
           storage.get(keys, (result) => {
-            expect(result).toBeDefined();
-            expect(typeof result === 'object').toBeTruthy();
-            keys.forEach((k) => {
-              expect(result).toHaveProperty(k, undefined);
-            });
+            expect(result).toStrictEqual({});
             done();
           });
         });
         test('an object key', (done) => {
           const key = { test: [] };
           storage.get(key, (result) => {
-            expect(result).toBeDefined();
-            expect(typeof result === 'object').toBeTruthy();
-            Object.keys(key).forEach((k) => {
-              expect(result).toHaveProperty(k);
-              expect(result[k]).toEqual(key[k]);
-            });
+            expect(result).toStrictEqual({ test: [] });
             done();
           });
         });
@@ -71,8 +60,8 @@ describe('browser.storage', () => {
         const key = 'key';
         return expect(storage.get(key)).resolves.toEqual({ key: undefined });
       });
-      test('getBytesInUse', (done) => {
-        const callback = jest.fn(() => done());
+      test('getBytesInUse', () => {
+        const callback = jest.fn();
         expect(jest.isMockFunction(storage.getBytesInUse)).toBe(true);
         storage.getBytesInUse('key', callback);
         expect(storage.getBytesInUse).toHaveBeenCalledTimes(1);
@@ -81,8 +70,8 @@ describe('browser.storage', () => {
       test('getBytesInUse promise', () => {
         return expect(storage.getBytesInUse('key')).resolves.toBe(0);
       });
-      test('set', (done) => {
-        const callback = jest.fn(() => done());
+      test('set', () => {
+        const callback = jest.fn();
         expect(jest.isMockFunction(storage.set)).toBe(true);
         storage.set({ key: 'foo' }, callback);
         expect(storage.set).toHaveBeenCalledTimes(1);
@@ -91,8 +80,8 @@ describe('browser.storage', () => {
       test('set promise', () => {
         return expect(storage.set(1)).resolves.toBeUndefined();
       });
-      test('remove', (done) => {
-        const callback = jest.fn(() => done());
+      test('remove', () => {
+        const callback = jest.fn();
         expect(jest.isMockFunction(storage.remove)).toBe(true);
         storage.remove('key', callback);
         expect(storage.remove).toHaveBeenCalledTimes(1);
@@ -101,8 +90,8 @@ describe('browser.storage', () => {
       test('remove promise', () => {
         return expect(storage.remove(['foo', 'bar'])).resolves.toBeUndefined();
       });
-      test('clear', (done) => {
-        const callback = jest.fn(() => done());
+      test('clear', () => {
+        const callback = jest.fn();
         expect(jest.isMockFunction(browser.storage.sync.clear)).toBe(true);
         storage.clear(callback);
         expect(storage.clear).toHaveBeenCalledTimes(1);
@@ -120,24 +109,16 @@ describe('browser.storage', () => {
         storage.set({ key: 'value', foo: 'bar', foo2: 'bar2' }, () => {
           // get 'key'
           storage.get(['key'], (result) => {
-            expect(result).toBeDefined();
-            expect(typeof result === 'object').toBeTruthy();
-            expect(result).toHaveProperty('key', 'value');
-            expect(result).not.toHaveProperty('foo');
-            expect(result).not.toHaveProperty('foo2');
+            expect(result).toStrictEqual({ key: 'value' });
             // remove 'key'
             storage.remove('key', () => {
               // get all values
               storage.get(null, (result) => {
-                expect(result).toHaveProperty('key', undefined);
-                expect(result).toHaveProperty('foo', 'bar');
-                expect(result).toHaveProperty('foo2', 'bar2');
+                expect(result).toStrictEqual({ foo: 'bar', foo2: 'bar2' });
                 // clear values
                 storage.clear(() => {
                   storage.get(['key', 'foo', 'foo2'], (result) => {
-                    expect(result).toHaveProperty('key', undefined);
-                    expect(result).toHaveProperty('foo', undefined);
-                    expect(result).toHaveProperty('foo2', undefined);
+                    expect(result).toStrictEqual({});
                     done();
                   });
                 });
