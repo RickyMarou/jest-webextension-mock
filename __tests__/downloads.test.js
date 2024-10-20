@@ -1,12 +1,15 @@
 describe('browser.downloads', () => {
-  test('acceptDanger', (done) => {
+  test('acceptDanger', () => {
     const downloadId = 1;
-    const callback = jest.fn(() => done());
+    const callback = jest.fn();
 
     expect(jest.isMockFunction(chrome.downloads.acceptDanger)).toBe(true);
     chrome.downloads.acceptDanger(downloadId, callback);
     expect(chrome.downloads.acceptDanger).toHaveBeenCalledTimes(1);
-    expect(chrome.downloads.acceptDanger).toHaveBeenLastCalledWith(downloadId, callback);
+    expect(chrome.downloads.acceptDanger).toHaveBeenLastCalledWith(
+      downloadId,
+      callback
+    );
     expect(callback).toHaveBeenCalled();
   });
   test('acceptDanger Promise', () => {
@@ -14,14 +17,17 @@ describe('browser.downloads', () => {
 
     expect(chrome.downloads.acceptDanger(downloadId)).resolves.toBeUndefined();
   });
-  test('cancel', (done) => {
+  test('cancel', () => {
     const downloadId = 1;
-    const callback = jest.fn(() => done());
+    const callback = jest.fn();
 
     expect(jest.isMockFunction(chrome.downloads.cancel)).toBe(true);
     chrome.downloads.cancel(downloadId, callback);
     expect(chrome.downloads.cancel).toHaveBeenCalledTimes(1);
-    expect(chrome.downloads.cancel).toHaveBeenLastCalledWith(downloadId, callback);
+    expect(chrome.downloads.cancel).toHaveBeenLastCalledWith(
+      downloadId,
+      callback
+    );
     expect(callback).toHaveBeenCalled();
   });
   test('cancel Promise', () => {
@@ -29,14 +35,17 @@ describe('browser.downloads', () => {
 
     expect(chrome.downloads.cancel(downloadId)).resolves.toBeUndefined();
   });
-  test('download', (done) => {
+  test('download', () => {
     const options = {};
-    const callback = jest.fn(() => done());
+    const callback = jest.fn();
 
     expect(jest.isMockFunction(chrome.downloads.download)).toBe(true);
     chrome.downloads.download(options, callback);
     expect(chrome.downloads.download).toHaveBeenCalledTimes(1);
-    expect(chrome.downloads.download).toHaveBeenLastCalledWith(options, callback);
+    expect(chrome.downloads.download).toHaveBeenLastCalledWith(
+      options,
+      callback
+    );
     expect(callback).toHaveBeenCalled();
   });
   test('download Promise', () => {
@@ -44,9 +53,9 @@ describe('browser.downloads', () => {
 
     expect(chrome.downloads.download(options)).resolves.toBeUndefined();
   });
-  test('erase', (done) => {
+  test('erase', () => {
     const query = {};
-    const callback = jest.fn(() => done());
+    const callback = jest.fn();
 
     expect(jest.isMockFunction(chrome.downloads.erase)).toBe(true);
     chrome.downloads.erase(query, callback);
@@ -59,14 +68,17 @@ describe('browser.downloads', () => {
 
     expect(chrome.downloads.erase(query)).resolves.toBeUndefined();
   });
-  test('getFileIcon', (done) => {
+  test('getFileIcon', () => {
     const downloadId = 1;
-    const callback = jest.fn(() => done());
+    const callback = jest.fn();
 
     expect(jest.isMockFunction(chrome.downloads.getFileIcon)).toBe(true);
     chrome.downloads.getFileIcon(downloadId, callback);
     expect(chrome.downloads.getFileIcon).toHaveBeenCalledTimes(1);
-    expect(chrome.downloads.getFileIcon).toHaveBeenLastCalledWith(downloadId, callback);
+    expect(chrome.downloads.getFileIcon).toHaveBeenLastCalledWith(
+      downloadId,
+      callback
+    );
     expect(callback).toHaveBeenCalled();
   });
   test('getFileIcon Promise', () => {
@@ -82,14 +94,17 @@ describe('browser.downloads', () => {
     expect(chrome.downloads.open).toHaveBeenCalledTimes(1);
     expect(chrome.downloads.open).toHaveBeenLastCalledWith(downloadId);
   });
-  test('pause', (done) => {
+  test('pause', () => {
     const downloadId = 1;
-    const callback = jest.fn(() => done());
+    const callback = jest.fn();
 
     expect(jest.isMockFunction(chrome.downloads.pause)).toBe(true);
     chrome.downloads.pause(downloadId, callback);
     expect(chrome.downloads.pause).toHaveBeenCalledTimes(1);
-    expect(chrome.downloads.pause).toHaveBeenLastCalledWith(downloadId, callback);
+    expect(chrome.downloads.pause).toHaveBeenLastCalledWith(
+      downloadId,
+      callback
+    );
     expect(callback).toHaveBeenCalled();
   });
   test('pause Promise', () => {
@@ -97,14 +112,17 @@ describe('browser.downloads', () => {
 
     expect(chrome.downloads.pause(downloadId)).resolves.toBeUndefined();
   });
-  test('removeFile', (done) => {
+  test('removeFile', () => {
     const downloadId = 1;
-    const callback = jest.fn(() => done());
+    const callback = jest.fn();
 
     expect(jest.isMockFunction(chrome.downloads.removeFile)).toBe(true);
     chrome.downloads.removeFile(downloadId, callback);
     expect(chrome.downloads.removeFile).toHaveBeenCalledTimes(1);
-    expect(chrome.downloads.removeFile).toHaveBeenLastCalledWith(downloadId, callback);
+    expect(chrome.downloads.removeFile).toHaveBeenLastCalledWith(
+      downloadId,
+      callback
+    );
     expect(callback).toHaveBeenCalled();
   });
   test('removeFile Promise', () => {
@@ -112,14 +130,17 @@ describe('browser.downloads', () => {
 
     expect(chrome.downloads.removeFile(downloadId)).resolves.toBeUndefined();
   });
-  test('resume', (done) => {
+  test('resume', () => {
     const downloadId = 1;
-    const callback = jest.fn(() => done());
+    const callback = jest.fn();
 
     expect(jest.isMockFunction(chrome.downloads.resume)).toBe(true);
     chrome.downloads.resume(downloadId, callback);
     expect(chrome.downloads.resume).toHaveBeenCalledTimes(1);
-    expect(chrome.downloads.resume).toHaveBeenLastCalledWith(downloadId, callback);
+    expect(chrome.downloads.resume).toHaveBeenLastCalledWith(
+      downloadId,
+      callback
+    );
     expect(callback).toHaveBeenCalled();
   });
   test('resume Promise', () => {
@@ -127,9 +148,9 @@ describe('browser.downloads', () => {
 
     expect(chrome.downloads.resume(downloadId)).resolves.toBeUndefined();
   });
-  test('search', (done) => {
+  test('search', () => {
     const query = {};
-    const callback = jest.fn(() => done());
+    const callback = jest.fn();
 
     expect(jest.isMockFunction(chrome.downloads.search)).toBe(true);
     chrome.downloads.search(query, callback);
