@@ -43,6 +43,52 @@ function _defineProperty(obj, key, value) {
   }
   return obj;
 }
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+}
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+function _iterableToArrayLimit(arr, i) {
+  var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
+  if (_i == null) return;
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _s, _e;
+  try {
+    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+  return _arr;
+}
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+  return arr2;
+}
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
 
 // https://developer.chrome.com/extensions/omnibox
 
@@ -259,196 +305,81 @@ var createEventListeners = function createEventListeners() {
   };
 };
 
-var syncStore = {};
-var localStore = {};
-var managedStore = {};
 function resolveKey(key, store) {
   if (typeof key === 'string') {
-    var result = {};
-    result[key] = store[key];
-    return result;
+    if (key in store) {
+      return {
+        key: store[key]
+      };
+    } else {
+      return {};
+    }
   } else if (Array.isArray(key)) {
-    return key.reduce(function (acc, curr) {
-      acc[curr] = store[curr];
-      return acc;
+    return key.reduce(function (acc, currKey) {
+      return _objectSpread2(_objectSpread2({}, acc), resolveKey(currKey, store));
     }, {});
   } else if (_typeof(key) === 'object') {
-    return Object.keys(key).reduce(function (acc, curr) {
-      acc[curr] = store[curr] || key[curr];
-      return acc;
+    return Object.entries(key).reduce(function (acc, _ref) {
+      var _ref2 = _slicedToArray(_ref, 2),
+        currKey = _ref2[0],
+        fallbackValue = _ref2[1];
+      return _objectSpread2(_objectSpread2({}, acc), {}, _defineProperty({}, currKey, fallbackValue), resolveKey(currKey, store));
     }, {});
   }
   throw new Error('Wrong key given');
 }
+function mockStore() {
+  var store = {};
+  return {
+    get: jest.fn(function (id, cb) {
+      var result = id === null || id === undefined ? store : resolveKey(id, store);
+      if (cb !== undefined) {
+        return cb(result);
+      }
+      return Promise.resolve(result);
+    }),
+    getBytesInUse: jest.fn(function (id, cb) {
+      if (cb !== undefined) {
+        return cb(0);
+      }
+      return Promise.resolve(0);
+    }),
+    set: jest.fn(function (payload, cb) {
+      Object.keys(payload).forEach(function (key) {
+        return store[key] = payload[key];
+      });
+      if (cb !== undefined) {
+        return cb();
+      }
+      return Promise.resolve();
+    }),
+    remove: jest.fn(function (id, cb) {
+      var keys = typeof id === 'string' ? [id] : id;
+      keys.forEach(function (key) {
+        return delete store[key];
+      });
+      if (cb !== undefined) {
+        return cb();
+      }
+      return Promise.resolve();
+    }),
+    clear: jest.fn(function (cb) {
+      Object.keys(store).forEach(function (key) {
+        return delete store[key];
+      });
+      if (cb !== undefined) {
+        return cb();
+      }
+      return Promise.resolve();
+    }),
+    onChanged: createEventListeners()
+  };
+}
 var storage = {
-  sync: {
-    get: jest.fn(function (id, cb) {
-      var result = id === null || id === undefined ? syncStore : resolveKey(id, syncStore);
-      if (cb !== undefined) {
-        return cb(result);
-      }
-      return Promise.resolve(result);
-    }),
-    getBytesInUse: jest.fn(function (id, cb) {
-      if (cb !== undefined) {
-        return cb(0);
-      }
-      return Promise.resolve(0);
-    }),
-    set: jest.fn(function (payload, cb) {
-      Object.keys(payload).forEach(function (key) {
-        return syncStore[key] = payload[key];
-      });
-      if (cb !== undefined) {
-        return cb();
-      }
-      return Promise.resolve();
-    }),
-    remove: jest.fn(function (id, cb) {
-      var keys = typeof id === 'string' ? [id] : id;
-      keys.forEach(function (key) {
-        return delete syncStore[key];
-      });
-      if (cb !== undefined) {
-        return cb();
-      }
-      return Promise.resolve();
-    }),
-    clear: jest.fn(function (cb) {
-      syncStore = {};
-      if (cb !== undefined) {
-        return cb();
-      }
-      return Promise.resolve();
-    }),
-    onChanged: createEventListeners()
-  },
-  local: {
-    get: jest.fn(function (id, cb) {
-      var result = id === null || id === undefined ? localStore : resolveKey(id, localStore);
-      if (cb !== undefined) {
-        return cb(result);
-      }
-      return Promise.resolve(result);
-    }),
-    getBytesInUse: jest.fn(function (id, cb) {
-      if (cb !== undefined) {
-        return cb(0);
-      }
-      return Promise.resolve(0);
-    }),
-    set: jest.fn(function (payload, cb) {
-      Object.keys(payload).forEach(function (key) {
-        return localStore[key] = payload[key];
-      });
-      if (cb !== undefined) {
-        return cb();
-      }
-      return Promise.resolve();
-    }),
-    remove: jest.fn(function (id, cb) {
-      var keys = typeof id === 'string' ? [id] : id;
-      keys.forEach(function (key) {
-        return delete localStore[key];
-      });
-      if (cb !== undefined) {
-        return cb();
-      }
-      return Promise.resolve();
-    }),
-    clear: jest.fn(function (cb) {
-      localStore = {};
-      if (cb !== undefined) {
-        return cb();
-      }
-      return Promise.resolve();
-    }),
-    onChanged: createEventListeners()
-  },
-  session: {
-    get: jest.fn(function (id, cb) {
-      var result = id === null || id === undefined ? localStore : resolveKey(id, localStore);
-      if (cb !== undefined) {
-        return cb(result);
-      }
-      return Promise.resolve(result);
-    }),
-    getBytesInUse: jest.fn(function (id, cb) {
-      if (cb !== undefined) {
-        return cb(0);
-      }
-      return Promise.resolve(0);
-    }),
-    set: jest.fn(function (payload, cb) {
-      Object.keys(payload).forEach(function (key) {
-        return localStore[key] = payload[key];
-      });
-      if (cb !== undefined) {
-        return cb();
-      }
-      return Promise.resolve();
-    }),
-    remove: jest.fn(function (id, cb) {
-      var keys = typeof id === 'string' ? [id] : id;
-      keys.forEach(function (key) {
-        return delete localStore[key];
-      });
-      if (cb !== undefined) {
-        return cb();
-      }
-      return Promise.resolve();
-    }),
-    clear: jest.fn(function (cb) {
-      localStore = {};
-      if (cb !== undefined) {
-        return cb();
-      }
-      return Promise.resolve();
-    }),
-    onChanged: createEventListeners()
-  },
-  managed: {
-    get: jest.fn(function (id, cb) {
-      var result = id === null || id === undefined ? managedStore : resolveKey(id, managedStore);
-      if (cb !== undefined) {
-        return cb(result);
-      }
-      return Promise.resolve(result);
-    }),
-    getBytesInUse: jest.fn(function (id, cb) {
-      if (cb !== undefined) {
-        return cb(0);
-      }
-      return Promise.resolve(0);
-    }),
-    set: jest.fn(function (payload, cb) {
-      Object.keys(payload).forEach(function (key) {
-        return managedStore[key] = payload[key];
-      });
-      if (cb !== undefined) {
-        return cb();
-      }
-      return Promise.resolve();
-    }),
-    remove: jest.fn(function (id, cb) {
-      var keys = typeof id === 'string' ? [id] : id;
-      keys.forEach(function (key) {
-        return delete managedStore[key];
-      });
-      if (cb !== undefined) {
-        return cb();
-      }
-      return Promise.resolve();
-    }),
-    clear: jest.fn(function (cb) {
-      managedStore = {};
-      if (cb !== undefined) {
-        return cb();
-      }
-      return Promise.resolve();
-    }),
-    onChanged: createEventListeners()
-  },
+  sync: mockStore(),
+  local: mockStore(),
+  session: mockStore(),
+  managed: mockStore(),
   onChanged: createEventListeners()
 };
 
