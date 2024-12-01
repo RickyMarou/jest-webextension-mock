@@ -1,5 +1,11 @@
 # jest-webextension-mock
 
+## 3.9.1
+
+### Patch Changes
+
+- Fix storage returning undefined for unknown keys
+
 ## 3.9.0
 
 ### Minor Changes
