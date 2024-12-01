@@ -90,6 +90,101 @@ function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
+var createEventListeners = function createEventListeners() {
+  var listeners = [];
+  return {
+    addListener: jest.fn(function (listener) {
+      listeners.push(listener);
+    }),
+    removeListener: jest.fn(function (listener) {
+      listeners = listeners.filter(function (l) {
+        return l !== listener;
+      });
+    }),
+    hasListener: jest.fn(function (listener) {
+      return listeners.includes(listener);
+    }),
+    hasListeners: jest.fn(function () {
+      return listeners.length > 0;
+    })
+  };
+};
+
+var createdAlarms = {};
+function clearAlarms(alarmNames) {
+  return (alarmNames !== null && alarmNames !== void 0 ? alarmNames : Object.keys(createdAlarms)).map(function (alarmName) {
+    var alarmExisted = alarmName in createdAlarms;
+    delete createdAlarms[alarmName];
+    return alarmExisted;
+  }).some(function (alarmExisted) {
+    return alarmExisted;
+  });
+}
+var alarms = {
+  clear: jest.fn(function (arg1, arg2) {
+    var _find;
+    var name = (_find = [arg1, arg2].find(function (it) {
+      return typeof it === 'string';
+    })) !== null && _find !== void 0 ? _find : '';
+    var callback = [arg1, arg2].find(function (it) {
+      return typeof it === 'function';
+    });
+    var result = clearAlarms([name]);
+    if (typeof callback === 'function') {
+      callback(result);
+    } else {
+      return Promise.resolve(result);
+    }
+  }),
+  clearAll: jest.fn(function (callback) {
+    var result = clearAlarms();
+    if (typeof callback === 'function') {
+      callback(result);
+    } else {
+      return Promise.resolve(result);
+    }
+  }),
+  create: jest.fn(function (arg1, arg2) {
+    var _find2, _find3, _alarmInfo$when, _ref, _alarmInfo$delayInMin;
+    var name = (_find2 = [arg1, arg2].find(function (it) {
+      return typeof it === 'string';
+    })) !== null && _find2 !== void 0 ? _find2 : '';
+    var alarmInfo = (_find3 = [arg1, arg2].find(function (it) {
+      return _typeof(it) === 'object';
+    })) !== null && _find3 !== void 0 ? _find3 : {};
+    createdAlarms[name] = _objectSpread2({
+      name: name,
+      scheduledTime: (_alarmInfo$when = alarmInfo.when) !== null && _alarmInfo$when !== void 0 ? _alarmInfo$when : Date.now() + ((_ref = (_alarmInfo$delayInMin = alarmInfo.delayInMinutes) !== null && _alarmInfo$delayInMin !== void 0 ? _alarmInfo$delayInMin : alarmInfo.periodInMinutes) !== null && _ref !== void 0 ? _ref : 0) * 60 * 1000
+    }, typeof alarmInfo.periodInMinutes === 'number' ? {
+      periodInMinutes: alarmInfo.periodInMinutes
+    } : {});
+  }),
+  get: jest.fn(function (arg1, arg2) {
+    var _find4;
+    var name = (_find4 = [arg1, arg2].find(function (it) {
+      return typeof it === 'string';
+    })) !== null && _find4 !== void 0 ? _find4 : '';
+    var callback = [arg1, arg2].find(function (it) {
+      return typeof it === 'function';
+    });
+    var alarm = createdAlarms[name];
+    if (typeof callback === 'function') {
+      callback(alarm);
+    } else {
+      return Promise.resolve(alarm);
+    }
+  }),
+  getAll: jest.fn(function (callback) {
+    var alarms = Object.values(createdAlarms);
+    if (typeof callback === 'function') {
+      callback(alarms);
+    } else {
+      return Promise.resolve(alarms);
+    }
+  }),
+  onAlarm: createEventListeners()
+};
+
 // https://developer.chrome.com/extensions/omnibox
 
 var omnibox = {
@@ -283,26 +378,6 @@ var tabs = {
   reload: jest.fn(function (tabId, reloadProperties, cb) {
     return cb();
   })
-};
-
-var createEventListeners = function createEventListeners() {
-  var listeners = [];
-  return {
-    addListener: jest.fn(function (listener) {
-      listeners.push(listener);
-    }),
-    removeListener: jest.fn(function (listener) {
-      listeners = listeners.filter(function (l) {
-        return l !== listener;
-      });
-    }),
-    hasListener: jest.fn(function (listener) {
-      return listeners.includes(listener);
-    }),
-    hasListeners: jest.fn(function () {
-      return listeners.length > 0;
-    })
-  };
 };
 
 function resolveKey(key, store) {
@@ -575,6 +650,7 @@ globalThis[Symbol["for"]('jest-webextension-mock')] = _objectSpread2({
   extensionPath: 'moz-extension://8b413e68-1e0d-4cad-b98e-1eb000799783/'
 }, globalThis[Symbol["for"]('jest-webextension-mock')]);
 var chrome = {
+  alarms: alarms,
   omnibox: omnibox,
   tabs: tabs,
   runtime: runtime,

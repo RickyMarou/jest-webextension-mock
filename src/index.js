@@ -1,3 +1,4 @@
+import { alarms } from './alarms';
 import { omnibox } from './omnibox';
 import { tabs } from './tabs';
 import { runtime } from './runtime';
@@ -20,6 +21,7 @@ globalThis[Symbol.for('jest-webextension-mock')] = {
 };
 
 const chrome = {
+  alarms,
   omnibox,
   tabs,
   runtime,
