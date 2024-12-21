@@ -113,6 +113,11 @@ describe('browser.storage', () => {
             expect(result).toStrictEqual({ test: 'value' });
             // remove 'test'
             storage.remove('test', () => {
+              // get all values one by one
+              expect(storage.get('foo')).resolves.toStrictEqual({ foo: 'bar' });
+              expect(storage.get('foo2')).resolves.toStrictEqual({
+                foo2: 'bar2',
+              });
               // get all values
               storage.get(null, (result) => {
                 expect(result).toStrictEqual({ foo: 'bar', foo2: 'bar2' });
