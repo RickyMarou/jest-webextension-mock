@@ -319,9 +319,7 @@ var createEventListeners = function createEventListeners() {
 function resolveKey(key, store) {
   if (typeof key === 'string') {
     if (key in store) {
-      return {
-        key: store[key]
-      };
+      return _defineProperty({}, key, store[key]);
     } else {
       return {};
     }
@@ -330,10 +328,10 @@ function resolveKey(key, store) {
       return _objectSpread2(_objectSpread2({}, acc), resolveKey(currKey, store));
     }, {});
   } else if (_typeof(key) === 'object') {
-    return Object.entries(key).reduce(function (acc, _ref) {
-      var _ref2 = _slicedToArray(_ref, 2),
-        currKey = _ref2[0],
-        fallbackValue = _ref2[1];
+    return Object.entries(key).reduce(function (acc, _ref2) {
+      var _ref3 = _slicedToArray(_ref2, 2),
+        currKey = _ref3[0],
+        fallbackValue = _ref3[1];
       return _objectSpread2(_objectSpread2({}, acc), {}, _defineProperty({}, currKey, fallbackValue), resolveKey(currKey, store));
     }, {});
   }
