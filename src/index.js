@@ -1,3 +1,4 @@
+import { alarms } from './alarms';
 import { browserAction } from './browserAction';
 import { commands } from './commands';
 import { downloads } from './downloads';
@@ -20,6 +21,7 @@ globalThis[Symbol.for('jest-webextension-mock')] = {
 
 const chrome = {
   action: browserAction,
+  alarms,
   browserAction,
   commands,
   downloads,
