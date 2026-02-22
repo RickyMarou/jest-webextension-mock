@@ -1,3 +1,3 @@
 export const extension = {
-    getURL: jest.fn(),
+  getURL: jest.fn(),
 };

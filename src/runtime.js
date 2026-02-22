@@ -43,7 +43,9 @@ export const runtime = {
         (lstn) => lstn !== listener
       );
     }),
-    hasListener: jest.fn((listener) => onMessageExternalListeners.includes(listener)),
+    hasListener: jest.fn((listener) =>
+      onMessageExternalListeners.includes(listener)
+    ),
   },
   onConnect: {
     addListener: jest.fn(),
@@ -56,7 +58,8 @@ export const runtime = {
     hasListener: jest.fn(),
   },
   getURL: jest.fn(function (path) {
-    const origin = globalThis[Symbol.for('jest-webextension-mock')].extensionPath;
+    const origin =
+      globalThis[Symbol.for('jest-webextension-mock')].extensionPath;
     return String(new URL(path, origin));
   }),
   openOptionsPage: jest.fn(),

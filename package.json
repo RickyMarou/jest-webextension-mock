@@ -6,6 +6,13 @@
   "module": "src/setup.js",
   "author": "Marwan Zibaoui <marwan.zibaoui@gmail.com> (https://mas.to/@Rickymarou)",
   "license": "ISC",
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/RickyMarou/jest-webextension-mock"
@@ -13,9 +20,11 @@
   "scripts": {
     "test": "jest",
     "build": "rollup -c",
-    "release": "changeset version",
-    "prettier": "prettier --write \"{config,src,__{tests,setups}__}/**/*.js\" rollup.config.js",
-    "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prettier": "prettier --write \"{src,__tests__,__setups__}/**/*.js\" rollup.config.js prettier.config.js",
+    "prepublishOnly": "npm run build",
+    "release": "changeset version"
   },
   "devDependencies": {
     "@babel/core": "^7.25.8",
