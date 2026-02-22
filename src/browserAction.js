@@ -1,22 +1,40 @@
-const getDetails = (details, cb) => {
-  if (cb !== undefined) {
-    return cb();
+import { createEventListeners } from './createEventListeners';
+
+const getDetails = (details, callback) => {
+  if (callback !== undefined) {
+    callback();
+    return;
+  } else {
+    return Promise.resolve();
   }
-  return Promise.resolve();
 };
+
+const getter = (callback) => {
+  if (callback !== undefined) {
+    callback();
+    return;
+  } else {
+    return Promise.resolve();
+  }
+};
+
 export const browserAction = {
-  setTitle: jest.fn(),
+  disable: jest.fn(),
+  enable: jest.fn(),
+  getBadgeBackgroundColor: jest.fn(getDetails),
+  getBadgeText: jest.fn(getDetails),
+  getBadgeTextColor: jest.fn(getDetails),
+  getPopup: jest.fn(getDetails),
   getTitle: jest.fn(getDetails),
+  getUserSettings: jest.fn(getter),
+  isEnabled: jest.fn(),
+  openPopup: jest.fn(),
+  setBadgeBackgroundColor: jest.fn(),
+  setBadgeText: jest.fn(),
+  setBadgeTextColor: jest.fn(),
   setIcon: jest.fn(getDetails),
   setPopup: jest.fn(),
-  getPopup: jest.fn(getDetails),
-  setBadgeText: jest.fn(),
-  getBadgeText: jest.fn(getDetails),
-  setBadgeBackgroundColor: jest.fn(),
-  getBadgeBackgroundColor: jest.fn(getDetails),
-  enable: jest.fn(),
-  disable: jest.fn(),
-  onClicked: {
-    addListener: jest.fn(),
-  },
+  setTitle: jest.fn(),
+  onClicked: createEventListeners(),
+  onUserSettingsChanged: createEventListeners(),
 };
