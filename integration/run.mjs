@@ -176,16 +176,23 @@ async function main() {
     nodeVersion: args.nodeVersion ?? config.defaults.nodeVersion,
     workdir: args.workdir ?? config.defaults.workdir,
     keepWorkdir:
-      args.keepWorkdir === null ? config.defaults.keepWorkdir : args.keepWorkdir,
+      args.keepWorkdir === null
+        ? config.defaults.keepWorkdir
+        : args.keepWorkdir,
     timeoutMs:
       args.timeoutMs === null ? config.defaults.timeoutMs : args.timeoutMs,
     concurrency:
-      args.concurrency === null ? config.defaults.concurrency : args.concurrency,
+      args.concurrency === null
+        ? config.defaults.concurrency
+        : args.concurrency,
   };
 
   const selected = args.only
     ? config.repos.filter((r) =>
-        args.only.split(',').map((s) => s.trim()).includes(r.name)
+        args.only
+          .split(',')
+          .map((s) => s.trim())
+          .includes(r.name)
       )
     : config.repos;
 
