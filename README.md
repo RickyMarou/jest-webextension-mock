@@ -1,4 +1,4 @@
-[![npm](https://img.shields.io/npm/v/jest-webextension-mock.svg)](https://www.npmjs.com/package/jest-webextension-mock) [![npm](https://img.shields.io/npm/l/jest-webextension-mock.svg)](https://github.com/clarkbw/jest-webextension-mock/blob/master/LICENSE) [![Codecov](https://img.shields.io/codecov/c/github/clarkbw/jest-webextension-mock.svg)](https://codecov.io/gh/clarkbw/jest-webextension-mock) [![Greenkeeper badge](https://badges.greenkeeper.io/clarkbw/jest-webextension-mock.svg)](https://greenkeeper.io/) [![Twitter](https://img.shields.io/twitter/url/https/github.com/clarkbw/jest-webextension-mock.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D)
+[![npm](https://img.shields.io/npm/v/jest-webextension-mock.svg)](https://www.npmjs.com/package/jest-webextension-mock) [![npm](https://img.shields.io/npm/l/jest-webextension-mock.svg)](https://github.com/RickyMarou/jest-webextension-mock/blob/main/LICENSE) [![CI](https://github.com/RickyMarou/jest-webextension-mock/actions/workflows/ci.yml/badge.svg)](https://github.com/RickyMarou/jest-webextension-mock/actions/workflows/ci.yml) [![Codecov](https://img.shields.io/codecov/c/github/RickyMarou/jest-webextension-mock.svg)](https://codecov.io/gh/RickyMarou/jest-webextension-mock)
 
 ## Install
 
@@ -96,7 +96,43 @@ it('should toggle the profiler on from stopped', () => {
 
 ## Development
 
-```
+```bash
 npm install
 npm test
+```
+
+### Linting
+
+```bash
+npm run lint
+npm run lint:fix    # auto-fix
+npm run prettier    # format code
+```
+
+### Contributing
+
+PRs require a changeset entry for changelog tracking. After making your changes:
+
+```bash
+npx changeset
+```
+
+Follow the prompts to describe your change (patch/minor/major). This creates a markdown file in `.changeset/` that should be committed with your PR.
+
+For changes that don't affect the published package (CI config, docs, etc.), add an empty changeset:
+
+```bash
+npx changeset --empty
+```
+
+### Publishing (maintainers only)
+
+Publishing is done locally to avoid storing npm credentials in CI.
+
+```bash
+npm run release                              # bumps version + updates CHANGELOG.md
+git add -A && git commit -m "release: vX.Y.Z"
+git push
+npm publish                                  # builds dist/ automatically via prepublishOnly
+git tag vX.Y.Z && git push --tags            # tag the release
 ```
