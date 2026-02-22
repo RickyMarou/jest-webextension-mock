@@ -20,6 +20,7 @@
   "scripts": {
     "test": "jest",
     "build": "rollup -c",
+    "integration:test": "node integration/run.mjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prettier": "prettier --write \"{src,__tests__,__setups__}/**/*.js\" rollup.config.js prettier.config.js",
