@@ -1,5 +1,18 @@
 # jest-webextension-mock
 
+## 4.1.0
+
+### Minor Changes
+
+- a9debb1: Add `browser.action` (MV3 alias for `browserAction`) and `browser.pageAction` APIs. Expand `browserAction` with missing methods (`getBadgeTextColor`, `getUserSettings`, `isEnabled`, `openPopup`, `setBadgeTextColor`) and upgrade events to use `createEventListeners()`.
+- 68ab1a8: Add `browser.alarms` API mock with `create`, `get`, `getAll`, `clear`, `clearAll`, and `onAlarm` event.
+
+### Patch Changes
+
+- 135c31f: Add integration runner to validate the package against external repos before publishing.
+- 7dd6007: Overhaul CI/CD pipeline: fix broken ESLint (migrate to flat config), remove dist/ from git, enforce changeset entries on PRs, slim down published package.
+- 7ee3b3c: Fix storage.get() returning `{ key: value }` instead of `{ [key]: value }` when retrieving a single string key.
+
 ## 4.0.0
 
 ### Major Changes
