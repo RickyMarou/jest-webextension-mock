@@ -3,7 +3,7 @@ import { createEventListeners } from './createEventListeners';
 function resolveKey(key, store) {
   if (typeof key === 'string') {
     if (key in store) {
-      return { key: store[key] };
+      return { [key]: store[key] };
     } else {
       return {};
     }
