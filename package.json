@@ -4,11 +4,13 @@
   "description": "Mock the components of a WebExtension",
   "main": "dist/setup.js",
   "module": "src/setup.js",
+  "types": "index.d.ts",
   "author": "Marwan Zibaoui <marwan.zibaoui@gmail.com> (https://mas.to/@Rickymarou)",
   "license": "ISC",
   "files": [
     "dist",
     "src",
+    "index.d.ts",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"
