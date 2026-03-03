@@ -1,5 +1,11 @@
 # jest-webextension-mock
 
+## 4.1.1
+
+### Patch Changes
+
+- 9a03623: Update development dependencies (babel, eslint, prettier, rollup, changesets) within existing major versions.
+
 ## 4.1.0
 
 ### Minor Changes
