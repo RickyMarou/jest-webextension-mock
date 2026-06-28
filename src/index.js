@@ -1,6 +1,7 @@
 import { alarms } from './alarms';
 import { browserAction } from './browserAction';
 import { commands } from './commands';
+import { contextMenus } from './contextMenus';
 import { downloads } from './downloads';
 import { extension } from './extension';
 import { geckoProfiler } from './geckoProfiler';
@@ -24,6 +25,8 @@ const chrome = {
   alarms,
   browserAction,
   commands,
+  contextMenus,
+  menus: contextMenus, // Firefox exposes the same API as `menus`
   downloads,
   extension,
   geckoProfiler,
