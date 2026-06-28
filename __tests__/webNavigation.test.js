@@ -37,38 +37,49 @@ describe('browser.webNavigation', () => {
         expect(e.hasListeners()).toBe(false);
         expect(e.hasListener(listener)).toBe(false);
       });
+
+      test('addListener accepts an optional URL filter', () => {
+        const e = chrome.webNavigation[event];
+        const filter = { url: [{ hostContains: 'example.com' }] };
+
+        e.addListener(listener, filter);
+        expect(e.addListener).toHaveBeenCalledWith(listener, filter);
+        expect(e.hasListener(listener)).toBe(true);
+      });
     });
   });
 
   describe('getFrame', () => {
     test('is a mock function', () => {
-      expect(jest.isMockFunction(chrome.webNavigation.getFrame)).toBe(true);
+      expect(jest.isMockFunction(browser.webNavigation.getFrame)).toBe(true);
     });
-    test('accepts a callback', () => {
+    test('accepts a callback and passes it the result', () => {
       const callback = jest.fn();
-      chrome.webNavigation.getFrame({ tabId: 1, frameId: 0 }, callback);
+      browser.webNavigation.getFrame({ tabId: 1, frameId: 0 }, callback);
       expect(callback).toHaveBeenCalledWith(null);
     });
-    test('returns a promise', () => {
-      return expect(
-        chrome.webNavigation.getFrame({ tabId: 1, frameId: 0 })
-      ).resolves.toBeNull();
+    test('returns a promise when no callback is given', () => {
+      const result = browser.webNavigation.getFrame({ tabId: 1, frameId: 0 });
+      expect(result).toBeInstanceOf(Promise);
+      return expect(result).resolves.toBeNull();
     });
   });
 
   describe('getAllFrames', () => {
     test('is a mock function', () => {
-      expect(jest.isMockFunction(chrome.webNavigation.getAllFrames)).toBe(true);
+      expect(jest.isMockFunction(browser.webNavigation.getAllFrames)).toBe(
+        true
+      );
     });
-    test('accepts a callback', () => {
+    test('accepts a callback and passes it the result', () => {
       const callback = jest.fn();
-      chrome.webNavigation.getAllFrames({ tabId: 1 }, callback);
+      browser.webNavigation.getAllFrames({ tabId: 1 }, callback);
       expect(callback).toHaveBeenCalledWith([]);
     });
-    test('returns a promise', () => {
-      return expect(
-        chrome.webNavigation.getAllFrames({ tabId: 1 })
-      ).resolves.toEqual([]);
+    test('returns a promise when no callback is given', () => {
+      const result = browser.webNavigation.getAllFrames({ tabId: 1 });
+      expect(result).toBeInstanceOf(Promise);
+      return expect(result).resolves.toEqual([]);
     });
   });
 });
