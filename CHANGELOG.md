@@ -1,5 +1,12 @@
 # jest-webextension-mock
 
+## 4.2.0
+
+### Minor Changes
+
+- e8087a9: Add a mock for the `contextMenus` API (also exposed as `menus` for Firefox parity): `create`, `update`, `remove`, `removeAll`, `refresh`, `getTargetElement`, the `ACTION_MENU_TOP_LEVEL_LIMIT` constant, and the `onClicked`/`onShown`/`onHidden` events (#11).
+- 25c1406: Flesh out the `webNavigation` mock: add the remaining events (`onBeforeNavigate`, `onCommitted`, `onDOMContentLoaded`, `onErrorOccurred`, `onCreatedNavigationTarget`, `onReferenceFragmentUpdated`, `onTabReplaced`) with full stateful listener tracking, and add `getFrame`/`getAllFrames` with the callback/promise dual pattern (#5).
+
 ## 4.1.1
 
 ### Patch Changes
