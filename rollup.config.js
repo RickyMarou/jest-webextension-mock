@@ -6,6 +6,7 @@ export default {
   plugins: [
     resolve(),
     babel({
+      babelHelpers: 'bundled',
       exclude: 'node_modules/**',
       babelrc: false,
       presets: [['@babel/preset-env', { modules: false }]],
