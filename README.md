@@ -111,6 +111,8 @@ npm run prettier    # format code
 
 ### Contributing
 
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for the full guide. Please also review our [Code of Conduct](./CODE_OF_CONDUCT.md).
+
 PRs require a changeset entry for changelog tracking. After making your changes:
 
 ```bash
