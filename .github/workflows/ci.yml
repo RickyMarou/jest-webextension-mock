@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   lint:
@@ -32,8 +33,11 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm test
-      - if: matrix.node-version == 22
-        uses: codecov/codecov-action@v4
+      - name: Upload coverage reports to Codecov
+        if: matrix.node-version == 22
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   changeset-check:
     if: github.event_name == 'pull_request'
