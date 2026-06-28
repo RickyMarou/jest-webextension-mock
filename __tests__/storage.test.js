@@ -127,6 +127,13 @@ describe('browser.storage', () => {
           });
         });
       });
+      test('remove deletes the key entirely', async () => {
+        await storage.set({ hi: 1 });
+        await storage.remove('hi');
+        const result = await storage.get(null);
+        expect(result).toStrictEqual({});
+        expect('hi' in result).toBe(false);
+      });
       test('onChanged', () => {
         const callback = jest.fn();
         expect(jest.isMockFunction(storage.onChanged.addListener)).toBe(true);
